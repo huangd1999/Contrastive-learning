@@ -114,6 +114,7 @@ x_list = []
 y_list = []
 criterion = NCECriterion(ndata)
 x = 0
+
 def train(epoch,model,train_loader,optimier,criterion):
     global x
     running_loss = 0.0
