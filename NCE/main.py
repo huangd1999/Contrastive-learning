@@ -162,7 +162,6 @@ test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffl
 
 cuda = True if torch.cuda.is_available() else False
 ndata = trainset.__len__()
-
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = Resnet.ResNet50().cuda()
 x_list = []
