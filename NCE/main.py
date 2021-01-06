@@ -11,7 +11,7 @@ import torch
 import random
 from NCEAverage import NCEAverage
 from MNISTInstance import MNISTInstance
-learning_rate = 10 ** random.uniform(-5, -1)   # From 1e-5 to 1e-1
+learning_rate = 10 ** random.uniform(-5, -4)   # From 1e-5 to 1e-4
 
 transform_train = transforms.Compose([
     transforms.RandomResizedCrop(size=28, scale=(0.2,1.)),
