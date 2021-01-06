@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader as DataLoader
 import time
-import AverageMeter
+from AverageMeter import *
 def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma):
     net.eval()
     net_time = AverageMeter()
