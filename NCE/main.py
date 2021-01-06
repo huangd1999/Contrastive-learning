@@ -51,7 +51,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = Resnet.ResNet50().cuda()
 criterion = NCECriterion(ndata)
 x = 0
-lemniscate = NCEAverage(inputSize= 128, outputSize = ndata, K = 10, T = 0.07, momentum = 0.5)
+lemniscate = NCEAverage(inputSize= 10, outputSize = ndata, K = 10, T = 0.07, momentum = 0.5)
 lemniscate.to(device)
 criterion.to(device)
 def train(epoch,model,train_loader,optimier,criterion):
