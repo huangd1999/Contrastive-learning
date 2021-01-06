@@ -141,7 +141,7 @@ def train(epoch):
 
         features = net(inputs)
         outputs = lemniscate(features, indexes)
-        loss = criterion(outputs, indexes)
+        loss = criterion(outputs)
 
         loss.backward()
         optimizer.step()
