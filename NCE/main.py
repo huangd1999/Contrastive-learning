@@ -78,7 +78,7 @@ def train(epoch,model,train_loader,optimier,criterion):
             print('[%d,%5d]loss:%.3f'%(epoch+1,i+1,running_loss/100))
             running_loss = 0.0
 
-optimier = optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+optimier = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 if __name__ =='__main__':
     epoch_i = 0
     for epoch in range(200):
