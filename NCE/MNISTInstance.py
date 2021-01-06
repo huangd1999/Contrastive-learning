@@ -7,18 +7,18 @@ class CIFAR10Instance(datasets.CIFAR10):
     """
     def __getitem__(self, index):
         if self.train:
-            img, target = self.data[index], self.targets[index]
+            self.img, self.target = self.data[index], self.targets[index]
         else:
-            img, target = self.data[index], self.targets[index]
+            self.img, self.target = self.data[index], self.targets[index]
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(img)
+        self.img = Image.fromarray(self.img)
 
         if self.transform is not None:
-            img = self.transform(img)
+            self.img = self.transform(self.img)
 
         if self.target_transform is not None:
-            target = self.target_transform(target)
+            target = self.target_transform(self.target)
 
-        return img, target, index
+        return self.img, self.target, index
