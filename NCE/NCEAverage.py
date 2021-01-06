@@ -1,11 +1,11 @@
 import torch
 from torch.autograd import Function
 from torch import nn
-from .alias_multinomial import AliasMethod
+from aliasmethod import aliasmethod
 import math
 
 
-class LinearAverageOp(Function):
+class NCEFunction(Function):
     @staticmethod
     def forward(self, x, y, memory, idx, params):
         K = int(params[0].item())
@@ -75,7 +75,7 @@ class NCEAverage(nn.Module):
         super(NCEAverage, self).__init__()
         self.nLem = outputSize
         self.unigrams = torch.ones(self.nLem)
-        self.multinomial = AliasMethod(self.unigrams)
+        self.multinomial = aliasmethod(self.unigrams)
         self.multinomial.cuda()
         self.K = K
 
@@ -85,6 +85,6 @@ class NCEAverage(nn.Module):
 
     def forward(self, x, y):
         batchSize = x.size(0)
-        idx = self.multinomial.draw(batchSize * (self.K + 1)).view(batchSize, -1)
-        out = LinearAverageOp.apply(x, y, self.memory, idx, self.params)
+        idx = self.multinomial.sample(batchSize * (self.K + 1)).view(batchSize, -1)
+        out = NCEFunction.apply(x, y, self.memory, idx, self.params)
         return out

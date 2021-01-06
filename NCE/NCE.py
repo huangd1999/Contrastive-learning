@@ -10,7 +10,7 @@ class NCECriterion(nn.Module):
         super(NCECriterion, self).__init__()
         self.nLem = nLem
 
-    def forward(self, x, targets):
+    def forward(self, x):
         batchSize = x.size(0)
         K = x.size(1) - 1
         Pnt = 1 / float(self.nLem)
@@ -36,3 +36,4 @@ class NCECriterion(nn.Module):
         loss = - (lnPmtsum + lnPonsum) / batchSize
 
         return loss
+
