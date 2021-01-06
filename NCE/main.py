@@ -11,13 +11,13 @@ import torch
 import random
 from NCEAverage import NCEAverage
 from MNISTInstance import MNISTInstance
-lr = 0.001
+lr = 0.1
 
 
 def adjust_learning_rate(optimier, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr  = 0.03
-    if epoch >= 80:
+    lr  = 0.1
+    if epoch >= 20:
         lr = lr * (0.1 ** ((epoch-80) // 40))
     for param_group in optimier.param_groups:
         param_group['lr'] = lr
@@ -78,8 +78,7 @@ def train(epoch,model,train_loader,optimier,criterion):
             print('[%d,%5d]loss:%.3f'%(epoch+1,i+1,running_loss/100))
             running_loss = 0.0
 
-
-optimier = optim.Adam(model.parameters(),lr=lr)
+optimier = optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 if __name__ =='__main__':
     epoch_i = 0
     for epoch in range(200):
