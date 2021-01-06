@@ -2,28 +2,43 @@ import torch
 from torch.utils.data import DataLoader as DataLoader
 import time
 from AverageMeter import *
-def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma):
+
+
+def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma, recompute_memory=0):
     net.eval()
     net_time = AverageMeter()
     cls_time = AverageMeter()
     total = 0
     testsize = testloader.dataset.__len__()
+
     trainFeatures = lemniscate.memory.t()
     if hasattr(trainloader.dataset, 'imgs'):
         trainLabels = torch.LongTensor([y for (p, y) in trainloader.dataset.imgs]).cuda()
     else:
         trainLabels = torch.LongTensor(trainloader.dataset.train_labels).cuda()
     C = trainLabels.max() + 1
+
+    if recompute_memory:
+        transform_bak = trainloader.dataset.transform
+        trainloader.dataset.transform = testloader.dataset.transform
+        temploader = torch.utils.data.DataLoader(trainloader.dataset, batch_size=100, shuffle=False, num_workers=1)
+        for batch_idx, (inputs, targets, indexes) in enumerate(temploader):
+            targets = targets.cuda()
+            batchSize = inputs.size(0)
+            features = net(inputs)
+            trainFeatures[:, batch_idx * batchSize:batch_idx * batchSize + batchSize] = features.data.t()
+        trainLabels = torch.LongTensor(temploader.dataset.target).cuda()
+        trainloader.dataset.transform = transform_bak
+
     top1 = 0.
     top5 = 0.
+    end = time.time()
     with torch.no_grad():
         retrieval_one_hot = torch.zeros(K, C).cuda()
         for batch_idx, (inputs, targets, indexes) in enumerate(testloader):
             end = time.time()
             targets = targets.cuda()
             batchSize = inputs.size(0)
-            inputs = inputs.cuda()
-            indexes = indexes.cuda()
             features = net(inputs)
             net_time.update(time.time() - end)
             end = time.time()
