@@ -27,6 +27,7 @@ def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma, recompute_mem
             batchSize = inputs.size(0)
             features = net(inputs)
             trainFeatures[:, batch_idx * batchSize:batch_idx * batchSize + batchSize] = features.data.t()
+        print(temploader.dataset.size())
         trainLabels = torch.LongTensor(temploader.dataset.target).cuda()
         trainloader.dataset.transform = transform_bak
 
