@@ -22,6 +22,8 @@ def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma):
             end = time.time()
             targets = targets.cuda()
             batchSize = inputs.size(0)
+            inputs = inputs.cuda()
+            indexes = indexes.cuda()
             features = net(inputs)
             net_time.update(time.time() - end)
             end = time.time()
