@@ -11,7 +11,7 @@ import time
 import Resnet as Resnet
 import torch
 from NCEAverage import NCEAverage
-from MNISTInstance import MNISTInstance
+from MNISTInstance import CIFAR100Instance
 import argparse
 import torch.backends.cudnn as cudnn
 
@@ -51,9 +51,9 @@ transform_test = transforms.Compose([
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
 ])
 
-trainset = MNISTInstance(root='../data/mnist', train=True, download=True, transform=transform_train)
+trainset = CIFAR100Instance(root='../data/cifar10', train=True, download=True, transform=transform_train)
 
-testset = MNISTInstance(root='../data/mnist', train=False, download=True, transform=transform_test)
+testset = CIFAR100Instance(root='../data/cifar10', train=False, download=True, transform=transform_test)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
 
 testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
