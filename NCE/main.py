@@ -11,8 +11,9 @@ import torch
 import random
 from NCEAverage import NCEAverage
 from MNISTInstance import MNISTInstance
-lr = 0.1
 
+lr = 10 ** random.uniform(-5, -2)   # From 1e-5 to 1e-1
+momentum = 1 - 10 ** random.uniform(-3, -1)   # From 0.9 to 0.999
 
 def adjust_learning_rate(optimier, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
@@ -51,7 +52,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = Resnet.ResNet50().cuda()
 criterion = NCECriterion(ndata)
 x = 0
-lemniscate = NCEAverage(inputSize= 10, outputSize = ndata, K = 10, T = 0.07, momentum = 0.5)
+lemniscate = NCEAverage(inputSize= 10, outputSize = ndata, K = 10, T = 0.07, momentum = momentum)
 lemniscate.to(device)
 criterion.to(device)
 def train(epoch,model,train_loader,optimier,criterion):
@@ -78,7 +79,7 @@ def train(epoch,model,train_loader,optimier,criterion):
             print('[%d,%5d]loss:%.3f'%(epoch+1,i+1,running_loss/100))
             running_loss = 0.0
 
-optimier = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+optimier = optim.SGD(model.parameters(), lr=lr, momentum=momentum, weight_decay=5e-4)
 if __name__ =='__main__':
     epoch_i = 0
     for epoch in range(200):
