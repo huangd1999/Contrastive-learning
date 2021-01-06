@@ -3,13 +3,13 @@ sys.path.append(r'D:\github\Contrastive-learning\NCE')
 import torch.optim as optim
 from torch.utils.data import DataLoader as DataLoader
 from torchvision import transforms
-from NCE import *
+from lib.NCE import *
 from test import kNN
 batch_size = 128
 import Resnet as Resnet
 import torch
 import random
-from NCEAverage import NCEAverage
+from lib.NCEAverage import NCEAverage
 from MNISTInstance import MNISTInstance
 
 lr = 10 ** random.uniform(-5, -2)   # From 1e-5 to 1e-1
