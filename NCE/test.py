@@ -1,7 +1,7 @@
 import torch
 import time
 import datasets
-from lib.utils import AverageMeter
+from lib.AverageMeter import AverageMeter
 import torchvision.transforms as transforms
 import numpy as np
 
