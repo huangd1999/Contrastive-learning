@@ -2,10 +2,14 @@ from __future__ import print_function
 
 import sys
 import torch
+import torch.nn as nn
 import torch.optim as optim
+import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 
+import torchvision
 import torchvision.transforms as transforms
+import lib.custom_transforms as custom_transforms
 
 import os
 import argparse
@@ -13,12 +17,13 @@ import time
 
 import models
 import datasets
+import math
 
 from lib.NCEAverage import NCEAverage
 #from lib.LinearAverage import LinearAverage
 from lib.NCE import NCECriterion
-from lib.AverageMeter import AverageMeter
-from test import kNN
+from lib.AverageMeter  import AverageMeter
+from test import NN, kNN
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.03, type=float, help='learning rate')
