@@ -12,6 +12,7 @@ def kNN(epoch, net, lemniscate, trainloader, testloader, K, sigma, recompute_mem
     testsize = testloader.dataset.__len__()
 
     trainFeatures = lemniscate.memory.t()
+    print(trainloader.dataset.size())
     if hasattr(trainloader.dataset, 'imgs'):
         trainLabels = torch.LongTensor([y for (p, y) in trainloader.dataset.imgs]).cuda()
     else:
