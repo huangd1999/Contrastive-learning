@@ -11,7 +11,17 @@ import torch
 import random
 from NCEAverage import NCEAverage
 from MNISTInstance import MNISTInstance
-learning_rate = 10 ** random.uniform(-5, -4)   # From 1e-5 to 1e-4
+lr = 0.03
+
+
+def adjust_learning_rate(optimier, epoch):
+    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
+    lr  = 0.03
+    if epoch >= 80:
+        lr = lr * (0.1 ** ((epoch-80) // 40))
+    for param_group in optimier.param_groups:
+        param_group['lr'] = lr
+
 
 transform_train = transforms.Compose([
     transforms.RandomResizedCrop(size=28, scale=(0.2,1.)),
@@ -46,6 +56,7 @@ lemniscate.to(device)
 criterion.to(device)
 def train(epoch,model,train_loader,optimier,criterion):
     global x
+    adjust_learning_rate(optimier, epoch)
     running_loss = 0.0
     epoch_i = 0
     for i,(inputs, _, index) in enumerate(train_loader, 0):
@@ -68,7 +79,7 @@ def train(epoch,model,train_loader,optimier,criterion):
             running_loss = 0.0
 
 
-optimier = optim.Adam(model.parameters(),lr=learning_rate)
+optimier = optim.Adam(model.parameters(),lr=lr)
 if __name__ =='__main__':
     epoch_i = 0
     for epoch in range(200):
